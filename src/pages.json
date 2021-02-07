@@ -2,32 +2,108 @@
 	"easycom": {
 		"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue"
 	},
+
+
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
-			"path": "pages/index/index",
-			"style": {
-				"navigationBarTitleText": "uni-app"
+			"path": "pages/index/index"
+		},
+		{
+			"path": "pages/course/index",
+			"style":{
+				"navigationBarTitleText":"课程列表"
 			}
 		},
 		{
-			"path": "pages/index/login",
-			"style": {
-				"navigationBarTitleText": "农技课堂",
-				"navigationBarTextStyle":"black",
-				"navigationStyle":"default"
+			"path": "pages/expert/index",
+			"style":{
+				"navigationBarTitleText":"专家列表"
 			}
+		},
+		{
+			"path": "pages/article/index",
+			"style":{
+				"navigationBarTitleText":"农技文章列表"
+			}
+		},
+		{
+			"path":"pages/help/index",
+			"style":{
+				"navigationBarTitleText":"求助列表"
+			}
+		},
+		{
+			"path": "pages/my/index"
+		},
+		{
+			"path": "pages/index/breeding",
+			"style": {}
 		},
 		{
 			"path": "pages/index/search",
 			"style": {
-				"navigationBarTitleText": "农技课堂"
+				"navigationStyle": "custom"
 			}
+		},
+		{
+			"path": "pages/live/index",
+			"style": {
+				"navigationBarTitleText": "直播列表"
+			}
+		},
+		{
+			"path":"pages/train/index",
+			"style":{
+				"navigationBarTitleText":"线下培训列表"
+			}
+		},
+		{
+			"path": "pages/index/login"
 		}
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
+		// "navigationStyle":"custom",
+		"navigationBarTitleText": "农技课堂",
+		"navigationBarBackgroundColor": "#FFF",
+		"backgroundColor": "#FFF"
+	},
+	"tabBar": {
+		"height": "136rpx",
+		"selectedColor": "#20BF8E",
+		"fontSize": "26rpx",
+		"backgroundColor": "#FFF",
+		"borderStyle": "black",
+		"list": [{
+				"pagePath": "pages/index/index",
+				"text": "首页",
+				"iconPath": "static/tabs/首页-常态@2x.png",
+				"selectedIconPath": "static/tabs/首页-高亮@2x.png"
+			},
+			{
+				"pagePath": "pages/course/index",
+				"text": "课程",
+				"iconPath": "static/tabs/课程-常态@2x.png",
+				"selectedIconPath": "static/tabs/课程-高亮@2x.png"
+			},
+			{
+				"pagePath": "pages/expert/index",
+				"text": "问专家",
+				"iconPath": "static/tabs/问专家-常态@2x.png",
+				"selectedIconPath": "static/tabs/问专家-高亮@2x.png"
+			},
+			{
+				"pagePath": "pages/article/index",
+				"text": "文章",
+				"iconPath": "static/tabs/文章-常态@2x.png",
+				"selectedIconPath": "static/tabs/文章-高亮@2x.png"
+			},
+			{
+				"pagePath": "pages/my/index",
+				"text": "我的",
+				"iconPath": "static/tabs/我的-常态@2x.png",
+				"selectedIconPath": "static/tabs/我的-高亮@2x.png"
+			}
+		]
 	}
 }

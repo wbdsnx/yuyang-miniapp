@@ -1,76 +1,97 @@
 <template>
-	<view class="container">
-		<view class="avator">
-			<u-image width='226rpx' height='226rpx' :src="src" @click="slectImage()"></u-image>
-		</view>
-		<view class="login-form">
-			<u-form class="login-form" :model="loginForm" ref="loginForm">
-				<view class="item-view">
-					<u-form-item label="手机号" label-position="top" label-style="labelStyle" >
-						<view class="input-view">
-							<u-input v-model="loginForm.phone" placeholder='请输入手机号'></u-input>
-						</view>
-					</u-form-item>
-				</view>
-				<view class="item-view">
-					<u-form-item label="验证码" label-position="top" :label-style="labelStyle">
-						<view>
-							<u-input v-model="loginForm.verifyCode" placeholder='请输入验证码'></u-input>
-						</view>
-						<view>
-							<u-button :custom-style='verifyCodeButtonStyle' @click='onVerifyCodeButtonClick()' :disabled="verifyCodeButtonDisabled">
-								{{verifyCodeTip}}
-							</u-button>
-						</view>
-					</u-form-item>
-				</view>
-			</u-form>
-		</view>
-
-		<view>
-			<u-button :custom-style='loginButtonStyle' @click="onLoginButtonClick()">登录</u-button>
-		</view>
-
+	<view class="body">
+		<u-image :width="width" :height="height" :src="src" mode="aspectFill"></u-image>
+		<u-form :model="loginModel" :rules="rules" ref="uForm" :errorType="errorType">
+			<u-form-item prop="phone">
+				<u-input :custom-style="inputStyle" placeholder="请输入手机号" v-model="loginModel.phone" type="text"></u-input>
+			</u-form-item>
+			<u-form-item :border="false" prop="code">
+				<u-input :custom-style='inputStyle' placeholder="请输入验证码" v-model="loginModel.code" type="text"></u-input>
+				<u-button :custom-style="verifyCodeButtonStyle" slot='right' type="success" size="medium">获取验证码</u-button>
+			</u-form-item>
+			<u-button :custom-style='logiButtonStyle' @click="onLoginButtonClick()">
+				登录
+			</u-button>
+		</u-form>
+		<view class="label phone-label">手机号</view>
+		<view class="label verifyCode-label">验证码</view>
 	</view>
-
 </template>
-
 <script>
 	export default {
 		data() {
 			return {
-				src: 'https://uviewui.com/common/logo.png',
-				labelStyle: {
-					fontSize: '26rpx',
+				inputStyle: {
+					fontSize: '30rpx'
 				},
 				verifyCodeButtonStyle: {
-					float: 'right',
-					color: '#20BF8EFF',
-					backgroundColor: '#20BF8E0D',
-					verticalAlign: 'middle'
+					width: '174rpx',
+					height: '64rpx',
+	
+					backgroundColor: this.$globalTheme.backgroundColor,
+					color: this.$globalTheme.color,
+					fontSize: '30rpx',
+					paddingTop: '21rpx',
+					paddingBottom: '20rpx'
 				},
-				loginButtonStyle: {
+				logiButtonStyle: {
 					marginTop: '88rpx',
 					height: '88rpx',
-					width: '100%',
-					backgroundColor: '#20BF8EFF',
-					fontSize: '34rpx',
-					color: '#FFFFFF'
+					backgroundColor: '#20BF8E',
+					color: '#FFFFFF',
+					fontSize: '34rpx'
 				},
-				loginForm: {
+				loginModel: {
 					phone: '',
-					verifyCode: ''
+					code: '',
 				},
+				rules: {
+					phone: [{
+							required: true,
+							message: '请输入手机号',
+							trigger: ['change', 'blur'],
+						},
+						{
+							validator: (rule, value, callback) => {
+								// 调用uView自带的js验证规则，详见：https://www.uviewui.com/js/test.html
+								return this.$u.test.mobile(value);
+							},
+							message: '手机号码不正确',
+							// 触发器可以同时用blur和change，二者之间用英文逗号隔开
+							trigger: ['change', 'blur'],
+						}
+					],
+					code: [{
+							required: true,
+							message: '请输入验证码',
+							trigger: ['change', 'blur'],
+						},
+						{
+							type: 'number',
+							message: '验证码只能为数字',
+							trigger: ['change', 'blur'],
+						}
+					],
+				},
+				errorType: ['message'],
+				width: '256rpx',
+				height: '256rpx',
+				src: 'https://uviewui.com/common/logo.png',
+
+
+
 				verifyCodeTimer: 5,
 				verifyCodeTip: '获取验证码',
 				verifyCodeButtonDisabled: false
 			}
 		},
+
 		onLoad: function() {
 			uni.getSystemInfo({
 				success: function(res) {}
 			})
 		},
+
 		methods: {
 			slectImage: function() {
 				var self = this;
@@ -83,6 +104,7 @@
 					}
 				});
 			},
+
 			onVerifyCodeButtonClick: function() {
 				this.$u.toast("验证码发送成功");
 				let self = this
@@ -98,41 +120,57 @@
 					}
 				}, 1000)
 			},
+
 			onLoginButtonClick: function() {
 				this.$store.hasLogin = !this.$store.hasLogin
 				console.log(this.$store.hasLogin)
 				uni.navigateTo({
-					url: './search'
+					url: './index'
 				})
 			}
 		}
 	}
 </script>
-<style scoped>
+
+<style lang="scss">
 	
-	.container {
-		display: flex;
-		flex-direction: column;
-		margin: auto 32rpx;
+	.u-image {
+		margin: 0rpx auto;
+		margin-top: 89rpx;
 	}
 
-	.avator {
-		display: flex;
-		margin: 0 auto;
-		margin-top: 98rpx;
-		width: 256rpx;
-		height: 256rpx;
+	.label {
+		padding: 0;
+		font-size: 26rpx;
+		height: 34rpx;
 	}
-	
-	.login-form {
-		margin-top: 94rpx;
-		width: 100%;
+
+	.u-form {
+		/* margin-top: 88rpx; */
+		position: absolute;
+		width: 686rpx;
+		top: 442rpx;
 	}
-	.item-view{
+
+	.phone-label {
+		position: absolute;
+		top: 448rpx;
+	}
+
+	.verifyCode-label {
+		position: absolute;
+		top: 567rpx;
+	}
+
+	.u-form-item {
 		height: 119rpx;
+		justify-content: center;
+		border-bottom-color: #DDDDDD;
 	}
-	.input-view{
-	
+
+	.u-input {
+		margin-top: 48rpx;
+		margin-bottom: 32rpx;
+		width: 323rpx;
 	}
-	
 </style>
